@@ -1,0 +1,12 @@
+<ng-container *ngTemplateOutlet="templateRef; context: treeData"></ng-container>
+<ng-template #templateRef let-data="data" let-parent="parent">
+  <ul class="tree-view__ul-item">
+    <li   class="tree-view__list-item"  *ngFor="let item of data; index as i">{{item.title}}
+        <input  class="tree-view__checkbox" [formControl]="item.checked" [id]="i?parentNodesList.push(i).toString():parentNodesList.push(i).toString()"    (ngModelChange)="onCheckChange(item, parent);" type="checkbox"> 
+        <ng-container *ngIf="item.children && item.children.length>0">
+          <ng-container  *ngTemplateOutlet="templateRef; context: {data: item.children, parent:item}"></ng-container>
+        </ng-container>
+      </li>
+  </ul>
+</ng-template>
+<button (click)="ss();">trigger</button>

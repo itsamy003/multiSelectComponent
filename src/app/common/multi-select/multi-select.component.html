@@ -1,0 +1,37 @@
+<div class="row multi-select-component" (ngrClickElsewhere)="closeDropdown()">
+  <div class="col-md-12">
+    <div class="token-container">
+      <div class="token-container__left">
+        <ng-container *ngFor="let item of items">
+          <span class="token-item"  [ngClass]="{'token-item--show':isItemInSelectedItems(item),'token-item--hide':!isItemInSelectedItems(item)}">
+            {{item.name}}<span class="token-item__close-icon"  (click)="removeFromSelectedItems(item);onChange(selectedItems);">&times;</span>
+          </span>
+        </ng-container>
+      </div>
+      <div class="token-container__right">
+        <i class="material-icons align-self-c cursor-pointer" (click)="isDropdownOpend = !isDropdownOpend">
+          expand_more
+          </i>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+    <button class="search-button" (blur)="onTouched(selectedItems)" (click)="isDropdownOpend = !isDropdownOpend">{{selectedItemsValues}}</button>
+    <div class="search-items-container" [hidden]="!isDropdownOpend">
+      <div class="wrapper">
+        <input type="text" placeholder="Search" class="search-textbox border-radius-0" [(ngModel)]="searchFieldValue">
+        <div class="multi-group remove-margin has-auto-y-scroll">
+          <ng-container *ngFor="let item of items|search:searchFieldValue; let f = first; let l = last;">
+          <li class="list-item" 
+          [ngClass]="{'active':isItemInSelectedItems(item), 'border-radius-0':f||l}"
+          (click)="toggleSelection(item);onChange(selectedItems)">
+              <span *ngIf="!multiSelectTemplate" class="list-item__title">{{item.name}}</span> 
+              <ng-container *ngIf="multiSelectTemplate">
+                <ng-container  *ngTemplateOutlet="multiSelectTemplate;context: {$implicit: item}"></ng-container>
+              </ng-container>
+          </li>
+        </ng-container>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

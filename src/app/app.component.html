@@ -1,20 +1,44 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Template driven form</h3>
+            {{clientsList2|json}}
+            <form #f="ngForm">
+                    <input type="text" ngModel 
+                    name="firstName" 
+                    #firstName="ngModel">
+                    <ngr-multi-select  name="clientsList2" [items]="clientOptions" #dir="ngModel" [ngModel]="clientsList2" ngrMinOptionsRequired>
+                    </ngr-multi-select>
+            </form>
+            {{f.invalid}}
+        </div>
+        <div class="col-md-6">
+            <h3>Reactive forms</h3>
+            <form [formGroup]="simpleForm">
+                <div formGroupName="userData">
+                    <div class="formgroup">
+                        <label for="username">UserName</label>
+                        <input type="text" class="form-control" id="username" formControlName="username">
+                        <span class="help-block" *ngIf="!simpleForm.get('userData.username').valid&&simpleForm.get('userData.username').touched">
+                            <span *ngIf="simpleForm.get('userData.username').errors['required']">field is required</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="formgroup">
+                    <label for="multiselect" name="favorite">My favorites</label>
+                    <!-- <ngr-multi-select formControlName="clientsList" [items]="clientOptions"> -->
+                        <!-- <ng-template ngrMultiSelectTemplate let-item>
+                            <label class="multiselect-temp-label">{{item?.name}}</label>&nbsp;
+                            <img [src]="item?.src" alt="item.srcTitle">
+                            <label class="multiselect-temp-label2">{{item?.city}}</label>
+                        </ng-template> -->
+                    <!-- </ngr-multi-select> -->
+                    <!-- <span *ngIf="simpleForm.get('clientsList').errors?.error&&simpleForm.get('clientsList').touched">{{simpleForm.get('clientsList').errors?.error}}</span>                     -->
+                </div>
+                <!-- {{simpleForm.get('clientsList').touched}}---
+                {{simpleForm.get('clientsList').value|json}} -->
+                <button class="btn btn-success" (click)="onSub()"  [disabled]="simpleForm.invalid">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
