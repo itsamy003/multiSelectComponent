@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
       'userData': new FormGroup({
         'username': new FormControl('dfdf', [Validators.required])
       }),
-      // 'clientsList': new FormControl([this.clientOptions[1]], [CustomValidators.validateCharacters])
+      'clientsList': new FormControl([this.clientOptions[1]], [CustomValidators.hasMinOptions(2)])
     });
   }
 

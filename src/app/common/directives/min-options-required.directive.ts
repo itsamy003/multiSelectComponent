@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { NG_VALIDATORS, ValidatorFn, FormControl } from '@angular/forms';
 import { CustomValidators } from '../validators/validators';
 
@@ -9,12 +9,13 @@ import { CustomValidators } from '../validators/validators';
   ]
 })
 export class MinOptionsRequiredDirective {
-
+  @Input ('ngrMinOptionsRequired') minRequired: any;
   validator: ValidatorFn;
   constructor() { }
   validate(c: FormControl) {
+    console.log(this.minRequired, 'min');
      if ( !c.value ) { return; }
-    return  CustomValidators.validateCharacters(c);
+    return  CustomValidators.hasMinOptions(this.minRequired)(c);
   }
 
 }

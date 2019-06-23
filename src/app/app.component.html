@@ -4,13 +4,19 @@
             <h3>Template driven form</h3>
             {{clientsList2|json}}
             <form #f="ngForm">
-                    <input type="text" ngModel 
+                    <input type="text" 
+                    ngModel 
                     name="firstName" 
-                    #firstName="ngModel">
-                    <ngr-multi-select  name="clientsList2" [items]="clientOptions" #dir="ngModel" [ngModel]="clientsList2" ngrMinOptionsRequired>
+                    #firstName="ngModel"/>
+
+                    <ngr-multi-select  
+                    name="clientsList2" 
+                    [items]="clientOptions" 
+                    #dir="ngModel" 
+                    [ngModel]="clientsList2" 
+                    [ngrMinOptionsRequired]="2">
                     </ngr-multi-select>
             </form>
-            {{f.invalid}}
         </div>
         <div class="col-md-6">
             <h3>Reactive forms</h3>
@@ -26,17 +32,17 @@
                 </div>
                 <div class="formgroup">
                     <label for="multiselect" name="favorite">My favorites</label>
-                    <!-- <ngr-multi-select formControlName="clientsList" [items]="clientOptions"> -->
+                    <ngr-multi-select formControlName="clientsList" [items]="clientOptions"> -->
                         <!-- <ng-template ngrMultiSelectTemplate let-item>
                             <label class="multiselect-temp-label">{{item?.name}}</label>&nbsp;
                             <img [src]="item?.src" alt="item.srcTitle">
                             <label class="multiselect-temp-label2">{{item?.city}}</label>
                         </ng-template> -->
-                    <!-- </ngr-multi-select> -->
-                    <!-- <span *ngIf="simpleForm.get('clientsList').errors?.error&&simpleForm.get('clientsList').touched">{{simpleForm.get('clientsList').errors?.error}}</span>                     -->
+                    </ngr-multi-select>
+                    <span *ngIf="simpleForm.get('clientsList').errors?.error&&simpleForm.get('clientsList').touched">{{simpleForm.get('clientsList').errors?.error}}</span>                    
                 </div>
-                <!-- {{simpleForm.get('clientsList').touched}}---
-                {{simpleForm.get('clientsList').value|json}} -->
+                {{simpleForm.get('clientsList').touched}} 
+                {{simpleForm.get('clientsList').value|json}} 
                 <button class="btn btn-success" (click)="onSub()"  [disabled]="simpleForm.invalid">Submit</button>
             </form>
         </div>
