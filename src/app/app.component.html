@@ -9,13 +9,13 @@
                     name="firstName" 
                     #firstName="ngModel"/>
 
-                    <ngr-multi-select  
+                    <!-- <ngr-multi-select  
                     name="clientsList2" 
                     [items]="clientOptions" 
                     #dir="ngModel" 
                     [ngModel]="clientsList2" 
                     [ngrMinOptionsRequired]="2">
-                    </ngr-multi-select>
+                    </ngr-multi-select> -->
             </form>
         </div>
         <div class="col-md-6">
@@ -32,7 +32,10 @@
                 </div>
                 <div class="formgroup">
                     <label for="multiselect" name="favorite">My favorites</label>
-                    <ngr-multi-select formControlName="clientsList" [items]="clientOptions"> -->
+                    <ngr-multi-select 
+                    formControlName="clientsList" 
+                    [items]="clientOptions"
+                    [settings]="settings">  
                         <!-- <ng-template ngrMultiSelectTemplate let-item>
                             <label class="multiselect-temp-label">{{item?.name}}</label>&nbsp;
                             <img [src]="item?.src" alt="item.srcTitle">

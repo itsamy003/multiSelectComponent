@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   public simpleForm: FormGroup;
   public clientOptions: Array<any>;
   public clientsList: Array<any>;
+  public settings: Object;
 
   public clientsList2: Array<any>;
   ngOnInit() {
@@ -33,6 +34,10 @@ export class AppComponent implements OnInit {
      this.clientsList2 = [
       { id: 1, name: 'ammi', city: 'Komaripalem' },
     ];
+    this.settings = {
+      token: {tokenView: false, maxToShow: 6 },
+      hasSingleSelection: true
+    };
     this.simpleForm = new FormGroup({
       'userData': new FormGroup({
         'username': new FormControl('dfdf', [Validators.required])

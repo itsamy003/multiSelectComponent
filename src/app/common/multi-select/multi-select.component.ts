@@ -10,19 +10,20 @@ import { MultiSelectTemplateDirective } from '../directives/multi-select-templat
 })
 export class MultiSelectComponent implements OnInit, ControlValueAccessor, Validators {
   @Input() items: Array<any>;
-   // Read in our structural directives as TemplateRefs
-  @ContentChild(MultiSelectTemplateDirective, {read: TemplateRef}) multiSelectTemplate;
+  @Input('settings') multiSelectConfig;
+
+  // Read structural directives as TemplateRefs
+  @ContentChild(MultiSelectTemplateDirective, { read: TemplateRef }) multiSelectTemplate;
   searchFieldValue: String;
   isDropdownOpend: Boolean = false;
-  selectedItems: [{id: Number, name: String}];
+  selectedItems: [{ id: Number, name: String }];
   selectedItemsValues: String;
   previousItemSelected: any; // particularly useful for single selection
-  onChange = (obj: Object) => {};
-  onTouched = (obj: Object) => {};
+  onChange = (obj: Object) => { };
+  onTouched = (obj: Object) => { };
   writeValue(obj: any): void {
     this.selectedItems = obj || [];
     this.previousItemSelected = this.selectedItems[0] || [];
-    this.setSelectedTitle();
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -38,11 +39,21 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
   }
 
   ngOnInit() {
+    // set default configurations
+    if (!this.multiSelectConfig) {
+      this.multiSelectConfig
+        = { token: { tokenView: true, maxToShow: 2 }, hasSingleSelection: false };
+    }
+    // set must have properties
+    if (this.multiSelectConfig && !('hasSingleSelection' in this.multiSelectConfig)) {
+      this.multiSelectConfig['hasSingleSelection'] = false;
+    }
+    this.setSelectedTitle();
     // const control = this.controlDir.control;
   }
   isItemInSelectedItems(item) {
     if (!(this.selectedItems && this.selectedItems.length > 0)) { return; }
-    return this.selectedItems.some((obj) =>  obj.id === item.id);
+    return this.selectedItems.some((obj) => obj.id === item.id);
   }
   removeFromSelectedItems(item) {
     let itemIndex = 0;
@@ -50,18 +61,18 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
       itemIndex = index;
       return obj.id === item.id;
     });
-    if (isItemIn ) {
+    if (isItemIn) {
       this.selectedItems.splice(itemIndex, 1);
     }
     this.setSelectedTitle();
   }
   toggleSelection(item) {
-   const isSelected = this.isItemInSelectedItems(item);
-   if ( !isSelected ) {
-     this.selectedItems.push(item);
-    //  if ( this.selectedItems.length > 1 && this.previousItemSelected ) {
-    //    this.removeFromSelectedItems(this.previousItemSelected);
-    //   }
+    const isSelected = this.isItemInSelectedItems(item);
+    if (!isSelected) {
+      this.selectedItems.push(item);
+      if (this.multiSelectConfig.hasSingleSelection && this.selectedItems.length > 1 && this.previousItemSelected) {
+        this.removeFromSelectedItems(this.previousItemSelected);
+      }
       this.previousItemSelected = item;
     } else {
       this.removeFromSelectedItems(item);
@@ -75,13 +86,13 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
   setSelectedTitle() {
     let limitArray = [];
     let remaining = [];
-    if ( this.selectedItems && this.selectedItems.length > 0 ) {
-      if (this.selectedItems.length > 9) {
-        limitArray = this.selectedItems.slice(0, 9);
-        remaining = this.selectedItems.slice(9, this.selectedItems.length);
-        this.selectedItemsValues = limitArray.map( ele => ele.name ).toString() + ' +' + remaining.length + ' Selected';
+    if (this.selectedItems && this.selectedItems.length > 0) {
+      if (this.selectedItems.length > this.multiSelectConfig.token.maxToShow) {
+        limitArray = this.selectedItems.slice(0, this.multiSelectConfig.token.maxToShow);
+        remaining = this.selectedItems.slice(this.multiSelectConfig.token.maxToShow, this.selectedItems.length);
+        this.selectedItemsValues = limitArray.map(ele => ele.name).toString() + ' +' + remaining.length + ' Selected';
       } else {
-        this.selectedItemsValues = this.selectedItems.map( ele => ele.name ).toString() + ' Selected';
+        this.selectedItemsValues = this.selectedItems.map(ele => ele.name).toString() + ' Selected';
       }
     } else {
       this.selectedItemsValues = '--Select--';

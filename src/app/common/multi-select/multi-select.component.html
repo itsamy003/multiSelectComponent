@@ -1,6 +1,6 @@
 <div class="row multi-select-component" (ngrClickElsewhere)="closeDropdown()">
   <div class="col-md-12">
-    <div class="token-container">
+    <div class="token-container" *ngIf="multiSelectConfig.token.tokenView">
       <div class="token-container__left">
         <ng-container *ngFor="let item of items">
           <span class="token-item"  [ngClass]="{'token-item--show':isItemInSelectedItems(item),'token-item--hide':!isItemInSelectedItems(item)}">
@@ -15,7 +15,7 @@
       </div>
       <div style="clear: both;"></div>
     </div>
-    <button class="search-button" (blur)="onTouched(selectedItems)" (click)="isDropdownOpend = !isDropdownOpend">{{selectedItemsValues}}</button>
+    <button class="search-button" (blur)="onTouched(selectedItems)" (click)="isDropdownOpend = !isDropdownOpend" *ngIf="!multiSelectConfig.token.tokenView">{{selectedItemsValues}}</button>
     <div class="search-items-container" [hidden]="!isDropdownOpend">
       <div class="wrapper">
         <input type="text" placeholder="Search" class="search-textbox border-radius-0" [(ngModel)]="searchFieldValue">
