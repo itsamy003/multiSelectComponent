@@ -31,12 +31,13 @@ export class AppComponent implements OnInit {
       { id: 13, name: 'vinni', city: 'Mamidada' },
       { id: 14, name: 'vinni', city: 'Mamidada' }
     ];
-     this.clientsList2 = [
+    this.clientsList2 = [
       { id: 1, name: 'ammi', city: 'Komaripalem' },
     ];
     this.settings = {
-      token: {tokenView: false, maxToShow: 6 },
-      hasSingleSelection: true
+      token: { tokenView: false, maxToShow: 6 },
+      hasSingleSelection: false,
+      selectBox: { label: '--Select--', context: 'client(s)'}
     };
     this.simpleForm = new FormGroup({
       'userData': new FormGroup({
@@ -44,6 +45,9 @@ export class AppComponent implements OnInit {
       }),
       'clientsList': new FormControl([this.clientOptions[1]], [CustomValidators.hasMinOptions(2)])
     });
+  }
+  getSelectedClient($event) {
+    console.log($event);
   }
 
 }

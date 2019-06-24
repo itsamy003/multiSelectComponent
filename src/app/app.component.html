@@ -33,8 +33,9 @@
                 <div class="formgroup">
                     <label for="multiselect" name="favorite">My favorites</label>
                     <ngr-multi-select 
-                    formControlName="clientsList" 
-                    [items]="clientOptions"
+                    formControlName="clientsList"
+                    (onSelect)="getSelectedClient($event)" 
+                    [options]="clientOptions"
                     [settings]="settings">  
                         <!-- <ng-template ngrMultiSelectTemplate let-item>
                             <label class="multiselect-temp-label">{{item?.name}}</label>&nbsp;

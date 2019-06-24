@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Self, ContentChild, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Self, ContentChild, TemplateRef, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, Validators, NgControl } from '@angular/forms';
 import { MultiSelectTemplateDirective } from '../directives/multi-select-template.directive';
 
@@ -9,8 +9,10 @@ import { MultiSelectTemplateDirective } from '../directives/multi-select-templat
   encapsulation: ViewEncapsulation.None
 })
 export class MultiSelectComponent implements OnInit, ControlValueAccessor, Validators {
-  @Input() items: Array<any>;
+  @Input() options: Array<any>;
   @Input('settings') multiSelectConfig;
+  // tslint:disable-next-line:no-output-on-prefix
+  @Output() onSelect: EventEmitter<any>  = new EventEmitter();
 
   // Read structural directives as TemplateRefs
   @ContentChild(MultiSelectTemplateDirective, { read: TemplateRef }) multiSelectTemplate;
@@ -42,7 +44,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
     // set default configurations
     if (!this.multiSelectConfig) {
       this.multiSelectConfig
-        = { token: { tokenView: true, maxToShow: 2 }, hasSingleSelection: false };
+        = { token: { tokenView: true, maxToShow: 2 }, hasSingleSelection: false, selectBox: { label: '--Select--', context: 'items'} };
     }
     // set must have properties
     if (this.multiSelectConfig && !('hasSingleSelection' in this.multiSelectConfig)) {
@@ -69,6 +71,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
   toggleSelection(item) {
     const isSelected = this.isItemInSelectedItems(item);
     if (!isSelected) {
+      this.onSelect.emit(item);
       this.selectedItems.push(item);
       if (this.multiSelectConfig.hasSingleSelection && this.selectedItems.length > 1 && this.previousItemSelected) {
         this.removeFromSelectedItems(this.previousItemSelected);
@@ -92,10 +95,11 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor, Valid
         remaining = this.selectedItems.slice(this.multiSelectConfig.token.maxToShow, this.selectedItems.length);
         this.selectedItemsValues = limitArray.map(ele => ele.name).toString() + ' +' + remaining.length + ' Selected';
       } else {
-        this.selectedItemsValues = this.selectedItems.map(ele => ele.name).toString() + ' Selected';
+        this.selectedItemsValues = this.selectedItems.map(ele => ele.name).toString()
+                                   + ` ${this.multiSelectConfig.selectBox.context} Selected`;
       }
     } else {
-      this.selectedItemsValues = '--Select--';
+      this.selectedItemsValues = this.multiSelectConfig.selectBox.label;
     }
   }
 }

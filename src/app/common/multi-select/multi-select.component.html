@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="token-container" *ngIf="multiSelectConfig.token.tokenView">
       <div class="token-container__left">
-        <ng-container *ngFor="let item of items">
+        <ng-container *ngFor="let item of options">
           <span class="token-item"  [ngClass]="{'token-item--show':isItemInSelectedItems(item),'token-item--hide':!isItemInSelectedItems(item)}">
             {{item.name}}<span class="token-item__close-icon"  (click)="removeFromSelectedItems(item);onChange(selectedItems);">&times;</span>
           </span>
@@ -15,12 +15,17 @@
       </div>
       <div style="clear: both;"></div>
     </div>
-    <button class="search-button" (blur)="onTouched(selectedItems)" (click)="isDropdownOpend = !isDropdownOpend" *ngIf="!multiSelectConfig.token.tokenView">{{selectedItemsValues}}</button>
+    <button class="search-button" (blur)="onTouched(selectedItems)" (click)="isDropdownOpend = !isDropdownOpend" *ngIf="!multiSelectConfig.token.tokenView">
+      {{selectedItemsValues}}
+      <i class="material-icons cursor-pointer" (click)="isDropdownOpend = !isDropdownOpend">
+          expand_more
+        </i>
+    </button>
     <div class="search-items-container" [hidden]="!isDropdownOpend">
       <div class="wrapper">
         <input type="text" placeholder="Search" class="search-textbox border-radius-0" [(ngModel)]="searchFieldValue">
         <div class="multi-group remove-margin has-auto-y-scroll">
-          <ng-container *ngFor="let item of items|search:searchFieldValue; let f = first; let l = last;">
+          <ng-container *ngFor="let item of options|search:searchFieldValue; let f = first; let l = last;">
           <li class="list-item" 
           [ngClass]="{'active':isItemInSelectedItems(item), 'border-radius-0':f||l}"
           (click)="toggleSelection(item);onChange(selectedItems)">
